@@ -1,0 +1,9 @@
+{
+    "name": "navmesh.components",
+    "displayName": "Navmesh Components",
+    "version": "0.0.1",
+    "unity": "2019.1",
+    "author": "Unity Technologies",
+    "description": "Navigation Mesh Generation Utility",
+    "dependencies": {}
+}
