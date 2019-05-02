@@ -12,5 +12,7 @@ This is just a simple example that show 'a' way to use the planner.
 
 This example will improve over time.
 
+![Screenshot](https://i.imgur.com/ihO9WC0.png)
+
 ## Support
 Join the [discord channel](https://discord.gg/MuccnAz) to share your experience and get support on the usage of Fluid HTN.
