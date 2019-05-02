@@ -26,6 +26,17 @@ public partial class AIContext
     public List<Mobile> KnownEnemies = new List<Mobile>();
     public Mobile CurrentEnemy { get; set; }
 
+    /// <summary>
+    /// We can use this to prevent sensory updates from causing an unwanted replan.
+    /// This is used in the attack operator to ensure we always complete an attack
+    /// once its started, so that its effect is played, ensuring our attacker gets
+    /// tired.
+    /// This still feels a bit hacky. I'd prefer something more deliberate, since
+    /// so far in the example its fairly unique to attacks. So I'm not sure we
+    /// need this kind of wide-spread blocking of sensory.
+    /// </summary>
+    public bool CanSense { get; set; }
+
     public AIContext(AIAgent agent, AISenses senses, Transform head, Animator animator, NavMeshAgent navAgent)
     {
         Agent = agent;
@@ -36,6 +47,7 @@ public partial class AIContext
         NavAgent.isStopped = true;
         Mobile = agent.GetComponent<Mobile>();
         Mobile.Init(this);
+        CanSense = true;
 
         base.Init();
     }

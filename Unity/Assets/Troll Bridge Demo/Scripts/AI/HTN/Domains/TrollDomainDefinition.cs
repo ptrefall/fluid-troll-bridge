@@ -8,8 +8,7 @@ public class TrollDomainDefinition : AIDomainDefinition
     public override Domain<AIContext> Create()
     {
         return new AIDomainBuilder("Troll")
-            .Select("Enemy engagement")
-                .HasState(AIWorldState.HasEnemyInSight)
+            .Select("Received damage")
                 .ReceivedDamage()
             .End()
             .Sequence("Bridge patrol")

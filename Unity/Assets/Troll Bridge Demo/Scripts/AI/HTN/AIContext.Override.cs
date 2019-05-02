@@ -20,6 +20,11 @@ public partial class AIContext : BaseContext
         return HasState((int) state, (byte) (value ? 1 : 0));
     }
 
+    public bool HasState(AIWorldState state, byte value)
+    {
+        return HasState((int)state, value);
+    }
+
     public bool HasState(AIWorldState state)
     {
         return HasState((int) state, 1);

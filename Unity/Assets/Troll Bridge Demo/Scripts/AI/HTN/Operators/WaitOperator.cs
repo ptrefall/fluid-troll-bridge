@@ -34,6 +34,9 @@ public class WaitOperator : IOperator
 
     public void Stop(IContext ctx)
     {
-
+        if (ctx is AIContext c)
+        {
+            c.GenericTimer = -1f;
+        }
     }
 }

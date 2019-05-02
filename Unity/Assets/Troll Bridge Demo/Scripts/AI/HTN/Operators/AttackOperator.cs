@@ -10,7 +10,9 @@ public class AttackOperator : IOperator
         {
             if (c.GenericTimer <= 0f)
             {
+                c.CanSense = false;
                 c.Animator.SetTrigger("attack");
+
                 var clipInfo = c.Animator.GetCurrentAnimatorClipInfo(0);
                 if (clipInfo.Length > 0)
                 {
@@ -27,6 +29,7 @@ public class AttackOperator : IOperator
             }
 
             c.GenericTimer = -1f;
+            c.CanSense = true;
             return TaskStatus.Success;
         }
 
@@ -35,6 +38,10 @@ public class AttackOperator : IOperator
 
     public void Stop(IContext ctx)
     {
-
+        if (ctx is AIContext c)
+        {
+            c.GenericTimer = -1f;
+            c.CanSense = true;
+        }
     }
 }

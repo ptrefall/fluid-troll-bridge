@@ -5,6 +5,7 @@ public enum AIWorldState
     HasEnemyInSight,
     HasEnemyInMeleeRange,
     HasReceivedDamage,
+    Stamina,
 }
 
 public enum AIDestinationTarget

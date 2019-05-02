@@ -1,6 +1,6 @@
 {
   "dependencies": {
-	"fluid.htn": "file:../../fluid-hierarchial-task-network/Fluid-HTN",
+	"fluid.htn": "file:../../../fluid-hierarchial-task-network/Fluid-HTN",
     "com.unity.ads": "2.0.8",
     "com.unity.analytics": "3.3.2",
     "com.unity.collab-proxy": "1.2.16",

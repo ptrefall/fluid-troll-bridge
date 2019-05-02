@@ -18,21 +18,65 @@ public class AIDomainBuilder : BaseDomainBuilder<AIDomainBuilder, AIContext>
         return this;
     }
 
-    public AIDomainBuilder SetState(AIWorldState state)
+    public AIDomainBuilder HasState(AIWorldState state, byte value)
+    {
+        var condition = new HasWorldStateCondition(state, value);
+        Pointer.AddCondition(condition);
+        return this;
+    }
+
+    public AIDomainBuilder HasStateGreaterThan(AIWorldState state, byte value)
+    {
+        var condition = new HasWorldStateGreaterThanCondition(state, value);
+        Pointer.AddCondition(condition);
+        return this;
+    }
+
+    public AIDomainBuilder SetState(AIWorldState state, EffectType type)
     {
         if (Pointer is IPrimitiveTask task)
         {
-            var effect = new SetWorldStateEffect(state);
+            var effect = new SetWorldStateEffect(state, type);
             task.AddEffect(effect);
         }
         return this;
     }
 
-    public AIDomainBuilder SetState(AIWorldState state, bool value)
+    public AIDomainBuilder SetState(AIWorldState state, bool value, EffectType type)
     {
         if (Pointer is IPrimitiveTask task)
         {
-            var effect = new SetWorldStateEffect(state, value);
+            var effect = new SetWorldStateEffect(state, value, type);
+            task.AddEffect(effect);
+        }
+        return this;
+    }
+
+    public AIDomainBuilder SetState(AIWorldState state, byte value, EffectType type)
+    {
+        if (Pointer is IPrimitiveTask task)
+        {
+            var effect = new SetWorldStateEffect(state, value, type);
+            task.AddEffect(effect);
+        }
+        return this;
+    }
+
+    public AIDomainBuilder IncrementState(AIWorldState state, EffectType type)
+    {
+        if (Pointer is IPrimitiveTask task)
+        {
+            var effect = new IncrementWorldStateEffect(state, type);
+            task.AddEffect(effect);
+        }
+        return this;
+    }
+
+    public AIDomainBuilder IncrementState(AIWorldState state, byte value, EffectType type)
+    {
+        if (Pointer is IPrimitiveTask task)
+        {
+            var effect = new IncrementWorldStateEffect(state, value, type);
             task.AddEffect(effect);
         }
         return this;
@@ -46,7 +90,7 @@ public class AIDomainBuilder : BaseDomainBuilder<AIDomainBuilder, AIContext>
         {
             task.SetOperator(new TakeDamageOperator());
         }
-        SetState(AIWorldState.HasReceivedDamage, false);
+        SetState(AIWorldState.HasReceivedDamage, false, EffectType.PlanAndExecute);
         End();
         return this;
     }
@@ -70,6 +114,7 @@ public class AIDomainBuilder : BaseDomainBuilder<AIDomainBuilder, AIContext>
         {
             task.SetOperator(new AttackOperator());
         }
+        IncrementState(AIWorldState.Stamina, EffectType.PlanAndExecute);
         End();
         return this;
     }
@@ -81,7 +126,7 @@ public class AIDomainBuilder : BaseDomainBuilder<AIDomainBuilder, AIContext>
         {
             task.SetOperator(new MoveToOperator(AIDestinationTarget.Enemy));
         }
-        SetState(AIWorldState.HasEnemyInMeleeRange);
+        SetState(AIWorldState.HasEnemyInMeleeRange, EffectType.PlanAndExecute);
         End();
         return this;
     }
@@ -115,6 +160,19 @@ public class AIDomainBuilder : BaseDomainBuilder<AIDomainBuilder, AIContext>
         {
             task.SetOperator(new WaitOperator(waitTime));
         }
+        End();
+        return this;
+    }
+
+    public AIDomainBuilder BeTired(float restTime)
+    {
+        Action("Be Tired");
+        HasStateGreaterThan(AIWorldState.Stamina, 2);
+        if (Pointer is IPrimitiveTask task)
+        {
+            task.SetOperator(new WaitOperator(restTime));
+        }
+        SetState(AIWorldState.Stamina, 0, EffectType.PlanAndExecute);
         End();
         return this;
     }

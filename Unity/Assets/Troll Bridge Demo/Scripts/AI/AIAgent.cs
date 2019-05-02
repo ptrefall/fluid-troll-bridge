@@ -50,7 +50,11 @@ public class AIAgent : MonoBehaviour
 
         _context.Animator.SetFloat("speed", _context.NavAgent.desiredVelocity.magnitude);
 
-        _sensory.Tick(_context);
+        if (_context.CanSense)
+        {
+            _sensory.Tick(_context);
+        }
+
         _planner.Tick(_domain, _context);
     }
 

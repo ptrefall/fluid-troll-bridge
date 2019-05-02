@@ -8,7 +8,12 @@ public class HumanDomainDefinition : AIDomainDefinition
     public override Domain<AIContext> Create()
     {
         return new AIDomainBuilder("Human")
-            .ReceivedDamage()
+            .Select("Received damage")
+                .ReceivedDamage()
+            .End()
+            .Select("Be tired")
+                .BeTired(2f)
+            .End()
             .Sequence("Enemy engagement")
                 .HasState(AIWorldState.HasEnemyInSight)
                 .FindEnemy()

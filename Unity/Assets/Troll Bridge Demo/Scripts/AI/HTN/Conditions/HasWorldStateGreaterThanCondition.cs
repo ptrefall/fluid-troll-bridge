@@ -3,22 +3,15 @@ using System;
 using FluidHTN;
 using FluidHTN.Conditions;
 
-public class HasWorldStateCondition : ICondition
+public class HasWorldStateGreaterThanCondition : ICondition
 {
     public string Name { get; }
     public AIWorldState State { get; }
     public byte Value { get; }
 
-    public HasWorldStateCondition(AIWorldState state)
+    public HasWorldStateGreaterThanCondition(AIWorldState state, byte value)
     {
-        Name = $"HasState({state})";
-        State = state;
-        Value = 1;
-    }
-
-    public HasWorldStateCondition(AIWorldState state, byte value)
-    {
-        Name = $"HasState({state})";
+        Name = $"HasStateGreaterThan({state})";
         State = state;
         Value = value;
     }
@@ -27,7 +20,7 @@ public class HasWorldStateCondition : ICondition
     {
         if (ctx is AIContext c)
         {
-            return c.HasState(State, Value);
+            return c.GetState(State) > Value;
         }
 
         throw new Exception("Unexpected context type!");
