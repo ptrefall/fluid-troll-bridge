@@ -40,6 +40,9 @@ We have implemented an AIContext on top of the BaseContext class. Its implemente
 ### AI World State
 Here we define the enum of our world state, used by the planner to store both the current state and the predicted state of the future. We also define a simple destination target enum here, that helps us add hints to where we want to go when a MoveTo operator is invoked in the HTN domain.
 
+### AI Domain Builder
+We have extended the base domain builder with a range of custom conditions, effects and operators. These makes the domains we write much easier to read, and more convenient to design with. The flexibility of the domain builder is such that we can encapsulate as much as we want into our extensions, making re-use of certain methods much easier, and reduse duplication. E.g. we can encapsulate an entire Action, with its internal conditions, effects and operator, and an End() call, before we return back out. How you decide to make extensions like these all depends on how you see its intended use. It can be more flexible to not call End() in these encapsulated methods, as that will allow the user to add more conditions and effects externally, but then they must remember to call End() on their own.
+
 ### Custom Conditions
 Since we know our world state types now, we can write some convenience conditions for use with our domain definitions. We write a Has World State and Has World State Greater Than condition. These just allow us to conveniently check against the state of World State entries.
 
