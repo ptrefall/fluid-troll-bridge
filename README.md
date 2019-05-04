@@ -72,5 +72,17 @@ This operator is quite similar to Attack operator. We trigger an animation, extr
 #### Wait Operator
 A very simple operator that sets the GenericTime in context and return continue until the duration of time is complete, then we return success.
 
+### Sensory
+We implement a simple, modular sensory system where each sensor type is added to the respective agent gameobject. The sensory system will automatically detect these and use them for sensing.
+
+#### Bridge Sensor
+Uses overlap sphere to find bridges in sight range.
+
+#### Mobile Sensor
+Uses overlap sphere to find all Mobiles in sight range, then identifies which of those mobiles are friends and enemies.
+
+#### Melee Range Sensor
+Checks whether our current enemy is in melee range.
+
 ## Support
 Join the [discord channel](https://discord.gg/MuccnAz) to share your experience and get support on the usage of Fluid HTN.
