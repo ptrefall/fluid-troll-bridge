@@ -41,7 +41,21 @@ We have implemented an AIContext on top of the BaseContext class. Its implemente
 Here we define the enum of our world state, used by the planner to store both the current state and the predicted state of the future. We also define a simple destination target enum here, that helps us add hints to where we want to go when a MoveTo operator is invoked in the HTN domain.
 
 ### AI Domain Builder
-We have extended the base domain builder with a range of custom conditions, effects and operators. These makes the domains we write much easier to read, and more convenient to design with. The flexibility of the domain builder is such that we can encapsulate as much as we want into our extensions, making re-use of certain methods much easier, and reduse duplication. E.g. we can encapsulate an entire Action, with its internal conditions, effects and operator, and an End() call, before we return back out. How you decide to make extensions like these all depends on how you see its intended use. It can be more flexible to not call End() in these encapsulated methods, as that will allow the user to add more conditions and effects externally, but then they must remember to call End() on their own.
+We have extended the base domain builder with a range of custom conditions, effects and operators. These makes the domains we write much easier to read, and more convenient to design with. The flexibility of the domain builder is such that we can encapsulate as much as we want into our extensions, making re-use of certain methods much easier, and reduce duplication. E.g. we can encapsulate an entire Action, with its internal conditions, effects and operator, and an End() call, before we return back out. How you decide to make extensions like these all depends on how you see its intended use. It can be more flexible to not call End() in these encapsulated methods, as that will allow the user to add more conditions and effects externally, but then they must remember to call End() on their own.
+
+Here are some of the more interesting behavior extensions to the builder:
+
+#### Attack Enemy
+Starts an Action, checks whether we're in the state HasEnemyInMeleeRange, sets the AttackOperator, then applies the IncrementState effect over the Stamina state during planning and execution. This ensures that the attack enemy behavior will only be used when we are in melee range of the enemy, and it cost us 1 stamina point to do it. Finally we End before returning the builder.
+
+#### Be Tired
+Takes in a rest time, which is the requried duration to wait while being tired and starts an Action. We check whether the Stamina state is greater than 2, then use the WaitOperator with the rest time as input for the action's operator. Finally we reset the Stamina state to 0. This means that every third attack the attacker gets tired and needs to rest. Finally we End before returning the builder.
+
+#### Move To Enemy
+We start an Action, then sets the MoveToOperator with Enemy as destination type. We proceed with applying the SetState effect over the HasEnemyInMeleeRange state during planning and execution. We know that if the MoveTo operator ends successfully, that we are automatically in Melee Range, so we don't have to wait for the Melee Range sensor to catch up with this information (that sensor is actually more important for when we're no longer in range). Finally we End before returning the builder. 
+
+#### Received Damage
+We start a new Action, then proceed to check the condition whether we have received damage. If this is true we apply the TakeDamage operator. We apply the SetState effect when the operator returns successfully, with the intention of changing the HasReceivedDamage state back to false. Finally we End before returning the builder.
 
 ### Custom Conditions
 Since we know our world state types now, we can write some convenience conditions for use with our domain definitions. We write a Has World State and Has World State Greater Than condition. These just allow us to conveniently check against the state of World State entries.
