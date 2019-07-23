@@ -20,7 +20,10 @@ public class HasWorldStateGreaterThanCondition : ICondition
     {
         if (ctx is AIContext c)
         {
-            return c.GetState(State) > Value;
+            var currentValue = c.GetState(State);
+            var result = currentValue > Value;
+            if (ctx.LogDecomposition) ctx.Log(Name, $"HasWorldStateGreaterThanCondition.IsValid({State}:{currentValue} > {Value} = {result})", ctx.CurrentDecompositionDepth+1, this);
+            return result;
         }
 
         throw new Exception("Unexpected context type!");

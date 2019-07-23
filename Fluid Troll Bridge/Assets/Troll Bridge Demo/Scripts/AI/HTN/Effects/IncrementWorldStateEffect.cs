@@ -30,7 +30,8 @@ public class IncrementWorldStateEffect : IEffect
         if (ctx is AIContext c)
         {
             var currentValue = c.GetState(State);
-            c.SetState(State, (byte) (currentValue + Value), Type);
+            c.SetState(State, (byte)(currentValue + Value), Type);
+            if (ctx.LogDecomposition) ctx.Log(Name, $"IncrementWorldStateEffect.Apply({State}:{currentValue}+{Value}:{Type})", ctx.CurrentDecompositionDepth+1, this);
             return;
         }
 

@@ -37,6 +37,7 @@ public class SetWorldStateEffect : IEffect
     {
         if (ctx is AIContext c)
         {
+            if (ctx.LogDecomposition) ctx.Log(Name, $"SetWorldStateEffect.Apply({State}:{Value}:{Type})", ctx.CurrentDecompositionDepth+1, this);
             c.SetState(State, Value, Type);
             return;
         }

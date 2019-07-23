@@ -10,7 +10,7 @@ public partial class AIContext : BaseContext
     public override List<string> MTRDebug { get; set; }
     public override List<string> LastMTRDebug { get; set; }
     public override bool DebugMTR { get; } = false;
-    public override Stack<string> DecompositionLog { get; set; }
+    public override Queue<FluidHTN.Debug.IBaseDecompositionLogEntry> DecompositionLog { get; set; }
     public override bool LogDecomposition { get; } = false;
 
     public override byte[] WorldState { get; } = new byte[Enum.GetValues(typeof(AIWorldState)).Length];

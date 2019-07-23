@@ -27,7 +27,9 @@ public class HasWorldStateCondition : ICondition
     {
         if (ctx is AIContext c)
         {
-            return c.HasState(State, Value);
+            var result = c.HasState(State, Value);
+            if (ctx.LogDecomposition) ctx.Log(Name, $"HasWorldStateCondition.IsValid({State}:{Value}:{result})", ctx.CurrentDecompositionDepth+1, this);
+            return result;
         }
 
         throw new Exception("Unexpected context type!");
