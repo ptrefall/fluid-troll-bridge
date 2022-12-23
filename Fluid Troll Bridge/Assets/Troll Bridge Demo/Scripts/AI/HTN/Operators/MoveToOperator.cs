@@ -114,4 +114,9 @@ public class MoveToOperator : IOperator
             c.NavAgent.isStopped = true;
         }
     }
+
+    public void Aborted(IContext ctx)
+    {
+        Stop(ctx);
+    }
 }

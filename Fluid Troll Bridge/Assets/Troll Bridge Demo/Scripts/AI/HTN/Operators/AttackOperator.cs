@@ -44,4 +44,9 @@ public class AttackOperator : IOperator
             c.CanSense = true;
         }
     }
+
+    public void Aborted(IContext ctx)
+    {
+        Stop(ctx);
+    }
 }

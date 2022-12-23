@@ -39,4 +39,9 @@ public class WaitOperator : IOperator
             c.GenericTimer = -1f;
         }
     }
+
+    public void Aborted(IContext ctx)
+    {
+        Stop(ctx);
+    }
 }

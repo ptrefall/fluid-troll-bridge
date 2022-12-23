@@ -33,4 +33,9 @@ public class FindEnemyOperator : IOperator
     {
 
     }
+
+    public void Aborted(IContext ctx)
+    {
+
+    }
 }

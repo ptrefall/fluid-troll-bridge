@@ -40,4 +40,9 @@ public class TakeDamageOperator : IOperator
             c.GenericTimer = -1f;
         }
     }
+
+    public void Aborted(IContext ctx)
+    {
+        Stop(ctx);
+    }
 }

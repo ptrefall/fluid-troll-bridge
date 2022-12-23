@@ -31,4 +31,9 @@ public class FindBridgeOperator : IOperator
     {
         
     }
+
+    public void Aborted(IContext ctx)
+    {
+
+    }
 }
