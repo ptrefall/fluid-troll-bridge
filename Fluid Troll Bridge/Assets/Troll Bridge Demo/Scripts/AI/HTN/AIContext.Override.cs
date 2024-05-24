@@ -6,7 +6,8 @@ using FluidHTN.Factory;
 
 public partial class AIContext : BaseContext
 {
-    public override IFactory Factory { get; set; } = new DefaultFactory();
+    public override IFactory Factory { get; protected set; } = new DefaultFactory();
+    public override IPlannerState PlannerState { get; protected set; } = new DefaultPlannerState();
     public override List<string> MTRDebug { get; set; }
     public override List<string> LastMTRDebug { get; set; }
     public override bool DebugMTR { get; } = false;

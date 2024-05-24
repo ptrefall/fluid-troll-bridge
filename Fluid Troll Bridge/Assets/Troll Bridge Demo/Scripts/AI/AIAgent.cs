@@ -67,10 +67,9 @@ public class AIAgent : MonoBehaviour
         _sensory?.DrawGizmos(_context);
 
 #if UNITY_EDITOR
-        var task = _planner.GetCurrentTask();
-        if (task != null)
+        if (_context.PlannerState.CurrentTask != null)
         {
-            Handles.Label(_context.Head.transform.position + Vector3.up, task.Name);
+            Handles.Label(_context.Head.transform.position + Vector3.up, _context.PlannerState.CurrentTask.Name);
         }
 #endif
     }
