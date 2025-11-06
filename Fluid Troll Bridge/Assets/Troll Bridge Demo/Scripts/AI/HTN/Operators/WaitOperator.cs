@@ -10,16 +10,21 @@ public class WaitOperator : IOperator
         WaitTime = waitTime;
     }
 
+    public TaskStatus Start(IContext ctx)
+    {
+        if (ctx is AIContext c)
+        {
+            c.GenericTimer = c.Time + WaitTime;
+            return TaskStatus.Continue;
+        }
+
+        return TaskStatus.Failure;
+    }
+
     public TaskStatus Update(IContext ctx)
     {
         if (ctx is AIContext c)
         {
-            if (c.GenericTimer <= 0f)
-            {
-                c.GenericTimer = c.Time + WaitTime;
-                return TaskStatus.Continue;
-            }
-
             if (c.Time < c.GenericTimer)
             {
                 return TaskStatus.Continue;
@@ -40,7 +45,7 @@ public class WaitOperator : IOperator
         }
     }
 
-    public void Aborted(IContext ctx)
+    public void Abort(IContext ctx)
     {
         Stop(ctx);
     }

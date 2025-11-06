@@ -53,7 +53,7 @@ public class MoveToOperator : IOperator
                 return TaskStatus.Failure;
             }
 
-            if (c.NavAgent.remainingDistance <= c.NavAgent.stoppingDistance)
+            if (c.NavAgent.hasPath && c.NavAgent.remainingDistance <= c.NavAgent.stoppingDistance)
             {
                 c.CurrentBridge.LastTimeVisited = c.Time;
                 c.CurrentBridge = null;
@@ -85,18 +85,21 @@ public class MoveToOperator : IOperator
         return TaskStatus.Failure;
     }
 
+    public TaskStatus Start(IContext ctx)
+    {
+        if (ctx is AIContext c)
+        {
+            return StartNavigation(c);
+        }
+
+        return TaskStatus.Failure;
+    }
+
     public TaskStatus Update(IContext ctx)
     {
         if (ctx is AIContext c)
         {
-            if (c.NavAgent.isStopped)
-            {
-                return StartNavigation(c);
-            }
-            else
-            {
-                return UpdateNavigation(c);
-            }
+            return UpdateNavigation(c);
         }
 
         return TaskStatus.Failure;
@@ -115,7 +118,7 @@ public class MoveToOperator : IOperator
         }
     }
 
-    public void Aborted(IContext ctx)
+    public void Abort(IContext ctx)
     {
         Stop(ctx);
     }

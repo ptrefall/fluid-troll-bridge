@@ -1,5 +1,8 @@
 ﻿
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
 using FluidHTN;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -38,6 +41,28 @@ public class AIAgent : MonoBehaviour
         _sensory = new SensorySystem(this);
 
         _domain = _domainDefinition.Create();
+
+        _context.PlannerState.OnNewPlan += tasks => Debug.Log($"{name} - New plan: {ToString(tasks)}");
+        _context.PlannerState.OnNewTask += task => Debug.Log($"{name} - New task: {task.Name}");
+        _context.PlannerState.OnCurrentTaskStarted += task => Debug.Log($"{name} - Task started: {task.Name}");
+        _context.PlannerState.OnCurrentTaskCompletedSuccessfully += task => Debug.Log($"{name} - Task finished: {task.Name}");
+        _context.PlannerState.OnCurrentTaskFailed += task => Debug.Log($"{name} - Task failed: {task.Name}");
+    }
+
+    private string ToString(Queue<ITask> plan)
+    {
+        var planArray = plan.ToArray();
+        var sb = new StringBuilder();
+        for (var i = 0; i < planArray.Length; i++)
+        {
+            var task = planArray[i];
+            sb.Append( task.Name );
+            if (i < planArray.Length - 1)
+            {
+                sb.Append(" -> ");
+            }
+        }
+        return sb.ToString();
     }
 
     private void Update()

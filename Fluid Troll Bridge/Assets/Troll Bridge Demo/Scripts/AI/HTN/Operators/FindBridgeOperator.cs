@@ -1,23 +1,19 @@
-﻿
-using FluidHTN;
+﻿using FluidHTN;
 using FluidHTN.Operators;
 
 public class FindBridgeOperator : IOperator
 {
-    public TaskStatus Update(IContext ctx)
+    public TaskStatus Start(IContext ctx)
     {
         if (ctx is AIContext c)
         {
-            if (c.CurrentBridge == null)
+            var bestTime = c.Time;
+            foreach (var bridge in c.KnownBridges)
             {
-                var bestTime = c.Time;
-                foreach (var bridge in c.KnownBridges)
+                if (bridge.LastTimeVisited < bestTime)
                 {
-                    if (bridge.LastTimeVisited < bestTime)
-                    {
-                        bestTime = bridge.LastTimeVisited;
-                        c.CurrentBridge = bridge;
-                    }
+                    bestTime = bridge.LastTimeVisited;
+                    c.CurrentBridge = bridge;
                 }
             }
 
@@ -27,12 +23,17 @@ public class FindBridgeOperator : IOperator
         return TaskStatus.Failure;
     }
 
+    public TaskStatus Update(IContext ctx)
+    {
+        return TaskStatus.Failure;
+    }
+
     public void Stop(IContext ctx)
     {
         
     }
 
-    public void Aborted(IContext ctx)
+    public void Abort(IContext ctx)
     {
 
     }

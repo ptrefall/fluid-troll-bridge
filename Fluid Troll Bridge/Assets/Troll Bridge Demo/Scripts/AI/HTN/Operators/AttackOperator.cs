@@ -4,25 +4,30 @@ using FluidHTN.Operators;
 
 public class AttackOperator : IOperator
 {
+    public TaskStatus Start(IContext ctx)
+    {
+        if (ctx is AIContext c)
+        {
+            c.CanSense = false;
+            c.Animator.SetTrigger("attack");
+
+            var clipInfo = c.Animator.GetCurrentAnimatorClipInfo(0);
+            if (clipInfo.Length > 0)
+            {
+                var clip = clipInfo[0].clip;
+                c.GenericTimer = c.Time + clip.length;
+            }
+
+            return TaskStatus.Continue;
+        }
+
+        return TaskStatus.Failure;
+    }
+
     public TaskStatus Update(IContext ctx)
     {
         if (ctx is AIContext c)
         {
-            if (c.GenericTimer <= 0f)
-            {
-                c.CanSense = false;
-                c.Animator.SetTrigger("attack");
-
-                var clipInfo = c.Animator.GetCurrentAnimatorClipInfo(0);
-                if (clipInfo.Length > 0)
-                {
-                    var clip = clipInfo[0].clip;
-                    c.GenericTimer = c.Time + clip.length;
-                }
-
-                return TaskStatus.Continue;
-            }
-
             if (c.Time < c.GenericTimer)
             {
                 return TaskStatus.Continue;
@@ -45,7 +50,7 @@ public class AttackOperator : IOperator
         }
     }
 
-    public void Aborted(IContext ctx)
+    public void Abort(IContext ctx)
     {
         Stop(ctx);
     }
